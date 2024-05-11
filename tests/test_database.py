@@ -16,8 +16,9 @@ Date: May 11, 2024
 """
 
 import os
-import subprocess
 import sqlite3
+import subprocess
+
 import pytest
 
 # Import the create_database and delete_database functions from the scripts
@@ -49,6 +50,7 @@ def test_db_path_fixture():
     """Fixture to provide the path to the temporary test database for testing."""
     yield DEFAULT_TEST_DB_PATH
 
+
 def test_create_user_table(test_db_path_fixture):
     """
     Test the creation of the user table in the database.
@@ -62,6 +64,7 @@ def test_create_user_table(test_db_path_fixture):
     authenticator = BasicAuthenticator(db_path=test_db_path_fixture)
     authenticator._create_user_table()
     # Add assertions to verify that the table is created correctly
+
 
 def test_database_connection(test_db_path_fixture):
     """
@@ -79,6 +82,7 @@ def test_database_connection(test_db_path_fixture):
         assert True
     except Exception as e:
         assert False, f"Database connection test failed: {e}"
+
 
 def test_table_existence(test_db_path_fixture):
     """
@@ -104,6 +108,7 @@ def test_table_existence(test_db_path_fixture):
     finally:
         conn.close()
 
+
 def test_table_structure(test_db_path_fixture):
     """
     Test the structure of tables in the database.
@@ -124,11 +129,14 @@ def test_table_structure(test_db_path_fixture):
         cursor.execute("PRAGMA table_info(users);")
         columns = cursor.fetchall()
         actual_columns = [column[1] for column in columns]
-        assert actual_columns == expected_columns, f"Unexpected table structure: {actual_columns}"
+        assert (
+            actual_columns == expected_columns
+        ), f"Unexpected table structure: {actual_columns}"
     except Exception as e:
         assert False, f"Table structure test failed: {e}"
     finally:
         conn.close()
+
 
 # Additional test functions can be added for other database tests
 def test_data_integrity(test_db_path_fixture):
@@ -147,7 +155,10 @@ def test_data_integrity(test_db_path_fixture):
     try:
         conn = sqlite3.connect(test_db_path_fixture)
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO users (username, hashed_password) VALUES (?, ?)", ("test_user", "hashed_password"))
+        cursor.execute(
+            "INSERT INTO users (username, hashed_password) VALUES (?, ?)",
+            ("test_user", "hashed_password"),
+        )
         conn.commit()
         cursor.execute("SELECT * FROM users WHERE username=?", ("test_user",))
         user = cursor.fetchone()
@@ -158,6 +169,7 @@ def test_data_integrity(test_db_path_fixture):
         assert False, f"Data integrity test failed: {e}"
     finally:
         conn.close()
+
 
 def test_database_operations(test_db_path_fixture):
     """
@@ -186,15 +198,23 @@ def test_database_operations(test_db_path_fixture):
             conn.commit()
 
         # Insert a test user into the 'users' table
-        cursor.execute("INSERT INTO users (username, hashed_password) VALUES (?, ?)", ("test_user", "hashed_password"))
+        cursor.execute(
+            "INSERT INTO users (username, hashed_password) VALUES (?, ?)",
+            ("test_user", "hashed_password"),
+        )
         conn.commit()
 
         # Update the password for the test user
-        cursor.execute("UPDATE users SET hashed_password=? WHERE username=?", ("new_hashed_password", "test_user"))
+        cursor.execute(
+            "UPDATE users SET hashed_password=? WHERE username=?",
+            ("new_hashed_password", "test_user"),
+        )
         conn.commit()
 
         # Retrieve the updated password for verification
-        cursor.execute("SELECT hashed_password FROM users WHERE username=?", ("test_user",))
+        cursor.execute(
+            "SELECT hashed_password FROM users WHERE username=?", ("test_user",)
+        )
         updated_password = cursor.fetchone()[0]
         assert updated_password == "new_hashed_password", "Record update failed"
 

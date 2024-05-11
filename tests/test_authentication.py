@@ -12,6 +12,7 @@ from delete_database import delete_database
 # Default test database path
 DEFAULT_TEST_DB_PATH = "test_auth.db"
 
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_teardown():
     # Determine the command based on whether the '--test' flag should be used
@@ -36,14 +37,17 @@ def authenticator():
     db_path = "test_auth.db"  # Use a temporary test database for testing
     return BasicAuthenticator(db_path=db_path)
 
+
 def test_authentication_success(authenticator):
     """Test successful authentication."""
     authenticator.register_user("example_user", "example_password")
     assert authenticator.authenticate("example_user", "example_password") is not None
 
+
 def test_authentication_failure(authenticator):
     """Test authentication failure with wrong password."""
     assert authenticator.authenticate("example_user", "wrong_password") is None
+
 
 def test_authentication_failure_no_user(authenticator):
     """Test authentication failure with non-existent user."""

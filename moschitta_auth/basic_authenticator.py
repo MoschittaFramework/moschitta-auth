@@ -69,7 +69,6 @@ class BasicAuthenticator:
         else:
             return False
 
-
     def logout(self, session_id: str) -> None:
         """Logout the user."""
         conn = sqlite3.connect(self.db_path)

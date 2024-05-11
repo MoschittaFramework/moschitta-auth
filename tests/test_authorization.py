@@ -12,6 +12,7 @@ from delete_database import delete_database
 # Default test database path
 DEFAULT_TEST_DB_PATH = "test_auth.db"
 
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_teardown():
     # Determine the command based on whether the '--test' flag should be used
@@ -26,6 +27,7 @@ def setup_teardown():
     # TODO Refactor the delete_database script to handle the other database types also.
     delete_database(DEFAULT_TEST_DB_PATH)
 
+
 from moschitta_auth.basic_authenticator import BasicAuthenticator
 
 
@@ -35,11 +37,13 @@ def authenticator():
     db_path = "test_auth.db"  # Use a temporary test database for testing
     return BasicAuthenticator(db_path=db_path)
 
+
 def test_authorization_success(authenticator):
     """Test successful authorization."""
     user = {}  # Mock user object
     permissions = ["admin"]  # User has admin permission
     assert authenticator.authorize(user, permissions) is True
+
 
 def test_authorization_failure(authenticator):
     """Test authorization failure."""
