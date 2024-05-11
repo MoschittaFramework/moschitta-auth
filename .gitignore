@@ -133,6 +133,9 @@ Thumbs.db
 *.swp
 *.tmp
 
+# SQLite databases
+*.db
+
 # Exclude personal configurations 
 #  (modify as needed)
 myconfig.py
