@@ -75,4 +75,4 @@ Contributions to `moschitta-auth` are welcome! You can contribute by opening iss
 
 ## License
 
-This project is licensed under the [MIT LICENSE](LICENSE).
+This project is licensed under the terms of the [MIT License](LICENSE).
